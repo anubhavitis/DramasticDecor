@@ -8,6 +8,16 @@ Use Node.js 22 or newer. Install dependencies with `npm install`, then run `npm 
 
 `.env.local` contains blank connection settings and is ignored by Git. `.env.example` documents the same variables. The local default is `CATALOG_MODE=demo`, with clearly labeled sample designs. Set `CATALOG_MODE=sheets` to read your real catalog. The app creates no Google Sheet, Drive folder, or Blob store.
 
+## Styling and system theme
+
+All layout, typography, spacing and responsive styling use Tailwind utilities. `globals.css` contains font imports, Tailwind theme tokens and the light/dark color palettes only. Shared presentation lives in `site-ui.tsx`; product cards and catalog filtering have separate components.
+
+The interface uses shadcn Button, Card, Select, ToggleGroup, Badge, Label, Separator, AspectRatio and Empty components. Colors follow the system's `prefers-color-scheme` setting automatically, including changes while the page is open. There is no theme switch, stored preference or theme initialization script.
+
+## Analytics
+
+Vercel Analytics is installed and `<Analytics />` from `@vercel/analytics/next` is rendered in the root layout. Enable Web Analytics for the Vercel project when deploying. No analytics environment variables are required by this integration; local development is not proof of production event delivery.
+
 ## Connection setup
 
 When ready to connect your own resources:
@@ -43,15 +53,16 @@ No production build, lint run, commit or deployment was performed as part of thi
 
 ## Testing & Verification
 
-- `npm test`: catalog validation, checkbox visibility, column reordering, price parsing, filtering, WhatsApp links, URL validation, photo validation and synchronization behavior.
+- `npm test`: server-rendered catalog and empty states, safe owner text, light/dark text contrast, catalog validation, checkbox visibility, column reordering, price parsing, filtering, WhatsApp links, URL validation, photo validation and synchronization behavior.
 - `npm run typecheck`: TypeScript verification without a production build.
 - Google integration test: start `postman simulation run postman/simulations/catalog/catalog.sim.yaml --port 4991 --no-history --output ndjson`, then run `SIMULATION_URL=http://localhost:4991/google npm test`.
 - The integration uses real HTTP calls to local Google stand-ins and an in-memory image-store adapter. It does not authenticate with Google or upload to Vercel Blob. Actual credentials, live permissions, the Blob SDK and production caching must be verified before launch.
+- Browser checks cover desktop, tablet and narrow-phone layouts, shadcn mouse/keyboard filters, empty results and product-specific inquiry links. The in-app browser cannot emulate system color preference; both palettes are checked for text contrast, but dark appearance and live OS preference changes still need visual verification on a system using dark mode.
 - Lint runs only when a commit is requested. Scope any lint fixes to touched files. If an unrelated pre-push hook fails, ask before bypassing it.
 
 ## Code layout
 
-- `src/app`: page, layout, error boundary and responsive styles.
+- `src/app`: page, layout, error boundary and theme tokens.
 - `src/components`: catalog, image presentation, WhatsApp icon and shadcn button.
 - `src/lib/catalog.ts`: pure catalog parsing, filtering and inquiry links.
 - `src/lib/config.ts`: environment and Google URL validation.

@@ -2,12 +2,14 @@
 import Image from 'next/image';
 import {useState} from 'react';
 import type {Product} from '@/lib/catalog';
+import {Badge} from '@/components/ui/badge';
+import {AspectRatio} from '@/components/ui/aspect-ratio';
 
 function DesignSwatch({product}:{product:Product}) {
  const pattern=product.pattern!;
  const {background,ink,motif}=pattern;
  const id=product.id;
- return <svg viewBox="0 0 500 420" role="img" aria-label={`Illustrative ${product.tone.toLowerCase()} ${product.theme.toLowerCase()} bedsheet design swatch`}>
+ return <svg className="size-full max-w-none transition-transform duration-300 group-hover:scale-[1.03] motion-reduce:transition-none" viewBox="0 0 500 420" role="img" aria-label={`Illustrative ${product.tone.toLowerCase()} ${product.theme.toLowerCase()} bedsheet design swatch`}>
   <defs>
    <pattern id={`pattern-${id}`} width="62" height="67" patternUnits="userSpaceOnUse"><g transform="translate(31 24)" fill={ink} stroke={ink}>
     {motif==='flower' ? <><g stroke="none" opacity=".85"><ellipse cy="-7" rx="3" ry="6"/><ellipse cy="7" rx="3" ry="6"/><ellipse cx="-7" rx="6" ry="3"/><ellipse cx="7" rx="6" ry="3"/><circle r="3.3" fill={background}/><circle r="1.6"/></g><path d="M0 13v12m0-6c-9-7-12-2-2 2m2-6c8-7 11-2 2 2" fill="none" strokeWidth="1.1"/></>:null}
@@ -33,9 +35,13 @@ function DesignSwatch({product}:{product:Product}) {
  </svg>;
 }
 export function ProductImage({product}:{product:Product}) {
- const [failed,setFailed]=useState(false);
- if(product.pattern) return <div className="product-image"><DesignSwatch product={product}/><span className="swatch-label">ILLUSTRATIVE DESIGN</span></div>;
- return <div className="product-image">
-  {product.imageUrl && !failed ? <Image src={product.imageUrl} alt={`${product.name}${product.tone?` — ${product.tone}`:''}`} fill sizes="(max-width: 580px) 45vw, (max-width: 800px) 46vw, 30vw" onError={()=>setFailed(true)}/>:<div className="photo-placeholder"><span aria-hidden="true">✳</span><p>Photo coming soon</p></div>}
+ const [failedSource,setFailedSource]=useState<string|null>(null);
+ const frameClassName='relative aspect-[.85] overflow-hidden rounded-[3px] bg-muted sm:aspect-[1.18]';
+ if(product.pattern) return <div data-slot="product-image" className={frameClassName}>
+  <div className="-ml-[17.5%] w-[135%] sm:ml-0 sm:w-full"><AspectRatio ratio={500/420}><DesignSwatch product={product}/></AspectRatio></div>
+  <Badge variant="secondary" className="absolute right-[6px] bottom-[7px] rounded-[2px] border-0 bg-background/75 px-[5px] py-[2px] text-[6px] font-normal tracking-[1px] text-foreground sm:right-3 sm:bottom-[10px] sm:text-[8px]">ILLUSTRATIVE DESIGN</Badge>
+ </div>;
+ return <div data-slot="product-image" className={frameClassName}>
+  {product.imageUrl && product.imageUrl!==failedSource ? <Image src={product.imageUrl} alt={`${product.name}${product.tone?` — ${product.tone}`:''}`} fill className="object-cover" sizes="(max-width: 580px) 45vw, (max-width: 800px) 46vw, 30vw" onError={()=>setFailedSource(product.imageUrl)}/>:<div className="flex h-full flex-col items-center justify-center text-muted-foreground"><span aria-hidden="true" className="text-[45px] text-ornament">✳</span><p className="m-[10px] text-[13px]">Photo coming soon</p></div>}
  </div>;
 }

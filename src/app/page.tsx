@@ -4,6 +4,8 @@ import { Catalog } from '@/components/catalog';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Brand, Eyebrow, InquiryButton, SectionTitle, containerClassName, linkFocusClassName } from '@/components/site-ui';
+import { WhatsAppLink } from '@/components/whatsapp-link';
+import { InstagramIcon } from '@/components/instagram-icon';
 import { WhatsAppIcon } from '@/components/whatsapp-icon';
 import { getCatalog } from '@/lib/server/catalog';
 import { getWhatsAppUrl } from '@/lib/catalog';
@@ -26,7 +28,7 @@ export default async function Home() {
       <nav aria-label="Main navigation" className="hidden gap-5 text-[13px] md:flex lg:gap-8">
         {[['#collection', 'Our collection'], ['#our-story', 'Our inspiration'], ['#how-to-order', 'How to order']].map(([href, label]) => <a key={href} href={href} className={cn('hover:text-rust', linkFocusClassName)}>{label}</a>)}
       </nav>
-      <InquiryButton compact href={inquiryUrl} target="_blank" rel="noopener noreferrer"><WhatsAppIcon /> Let&apos;s talk <span aria-hidden="true">↗</span></InquiryButton>
+      <WhatsAppLink href={inquiryUrl} />
     </header>
 
     <main>
@@ -75,7 +77,7 @@ export default async function Home() {
             <SectionTitle className="mb-6 text-[43px] sm:text-[40px] lg:text-[49px]">For homes with<br /><em>a story to tell.</em></SectionTitle>
             <p className="mb-[14px] max-w-[400px] text-[13px] leading-[1.9] text-muted-foreground sm:text-xs">A favourite print. A colour that reminds you of home. The bed you look forward to at the end of a long day.</p>
             <p className="mb-[14px] max-w-[400px] text-[13px] leading-[1.9] text-muted-foreground sm:text-xs">Our inspiration comes from the warmth of Indian homes and the patterns woven into everyday life. DramasticDecor brings that feeling to your bedroom, one bedsheet at a time.</p>
-            <a href={site.instagramUrl} target="_blank" rel="noopener noreferrer" className={cn('mt-1 inline-flex gap-[18px] border-b border-border py-2 text-[11px] hover:text-rust', linkFocusClassName)}>A little more of our world on Instagram <span aria-hidden="true">↗</span></a>
+            <a href={site.instagramUrl} target="_blank" rel="noopener noreferrer" className={cn('mt-1 inline-flex items-center gap-2 border-b border-border py-2 text-[11px] hover:text-rust', linkFocusClassName)}><InstagramIcon /> A little more of our world on Instagram <span aria-hidden="true">↗</span></a>
           </div>
         </div>
       </section>
@@ -102,7 +104,7 @@ export default async function Home() {
     <footer className="border-t border-border bg-secondary">
       <div className={cn(containerClassName, 'flex flex-col items-start justify-between gap-5 py-[27px] sm:flex-row sm:items-center sm:py-8')}>
         <Brand footer />
-        <a href={site.instagramUrl} target="_blank" rel="noopener noreferrer" className={cn('text-[11px] hover:text-rust', linkFocusClassName)}>Instagram · @{site.instagramHandle} <span aria-hidden="true">↗</span></a>
+        <a href={site.instagramUrl} target="_blank" rel="noopener noreferrer" className={cn('inline-flex items-center gap-2 text-[11px] hover:text-rust', linkFocusClassName)}><InstagramIcon /> Instagram · @{site.instagramHandle} <span aria-hidden="true">↗</span></a>
       </div>
       <div className={containerClassName}>
         <Separator className="bg-border" />

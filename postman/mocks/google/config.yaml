@@ -1,0 +1,9 @@
+version: 1
+name: google-catalog
+origin:
+  - sheets.googleapis.com
+  - www.googleapis.com
+interceptRequests: true
+scenarios:
+  - name: default
+    path: default.js

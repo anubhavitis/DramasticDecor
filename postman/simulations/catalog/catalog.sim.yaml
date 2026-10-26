@@ -1,0 +1,9 @@
+simulation: dramasticdecor-catalog
+routing: path
+mocks:
+  - name: Google Sheets and Drive
+    routeKey: google
+    origin:
+      - sheets.googleapis.com
+      - www.googleapis.com
+    path: postman/mocks/google
